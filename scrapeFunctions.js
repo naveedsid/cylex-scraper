@@ -109,12 +109,40 @@ async function getListingLinksSinglePage(url) {
 
 
 
+function getBaseURL(url) {
+    try {
+        // Ensure URL is properly formatted
+        url = url.trim();
+
+        // Agar "http" ya "https" hai, to new URL se hostname extract karein
+        if (url.startsWith("http")) {
+            return new URL(url).hostname.replace(/^www\./, '');
+        }
+
+        // Agar "www." shamil hai ya simple domain hai to regex use karein
+        let match = url.match(/(?:www\.)?([^\/]+)/);
+        return match ? match[1] : url;
+    } catch (error) {
+        console.error("Invalid URL:", url);
+        return "";
+    }
+}
 
 
 
 
-
-
+// function getBaseURL(url) {
+//     try {
+//         if (url.startsWith("http")) {
+//             return new URL(url).hostname.replace(/^www\./, '');
+//         }
+//         let match = url.match(/(?:www\.)?([^\/]+)/);
+//         return match ? match[1] : url;
+//     } catch (error) {
+//         console.error("Invalid URL:", url);
+//         return "";
+//     }
+// }
 
 
 
@@ -137,7 +165,10 @@ async function scrapeSingleList(url) {
     const complete_address = $('div#cp-street').text().trim() || "";
     const phoneNumber = $('div#cp-mainPhone-1 div.contact-data a.text-underline').text().trim() || "";
     const officeNumber = $('div#cp-mainPhone-2 div.contact-data a.text-underline').text().trim() || "";
-    const website = $('div#cp-website div.contact-data-container a.text-underline').text().trim() || "";
+    
+    // const website = $('div#cp-website div.contact-data-container a.text-underline').text().trim() || "";
+    const website = getBaseURL($('div#cp-website div.contact-data-container a.text-underline').text().trim() || "");
+
     const encodedEmail = $('span.__cf_email__').attr('data-cfemail') || "";
     const email = encodedEmail ? decodeCloudflareEmail(encodedEmail) : "";
     const imageAddress = $('div#company-logo-container img.company-logo').attr('src') || "";
