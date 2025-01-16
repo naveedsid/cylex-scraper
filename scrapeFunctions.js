@@ -3,14 +3,6 @@ const cheerio = require('cheerio');
 const { fetchWithProxy } = require('./proxyConfig');
 
 
-
-
-
-
-
-
-
-
 function decodeCloudflareEmail(encodedEmail) {
     const decodedEmail = [];
     const r = parseInt(encodedEmail.substr(0, 2), 16); // First 2 chars (hex) is the key
@@ -22,20 +14,6 @@ function decodeCloudflareEmail(encodedEmail) {
 
     return decodedEmail.join(''); // Join the characters to form the email
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -70,18 +48,6 @@ async function calculateResults(url) {
         throw error;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -220,20 +186,6 @@ async function scrapeSingleList(url) {
 
     return listingData;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
